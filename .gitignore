@@ -1,0 +1,48 @@
+# Dependencies and generated build output
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/coverage/
+client/.vite/
+server/prisma/generated/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Caches and temporary files
+.cache/
+**/.cache/
+**/.vite/
+**/.turbo/
+**/.parcel-cache/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Logs, session data, and local databases
+*.log
+logs/
+**/logs/
+sessions/
+**/sessions/
+*.session
+*.sqlite
+*.sqlite3
+
+# Local backups and editor artifacts
+*.bak
+*.backup
+*.orig
+*~
+*.swp
+.DS_Store
+Thumbs.db
