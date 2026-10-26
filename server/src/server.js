@@ -2,10 +2,12 @@ import 'dotenv/config'
 import bcrypt from 'bcryptjs'
 import connectPgSimple from 'connect-pg-simple'
 import express from 'express'
+import path from 'node:path'
 import { rateLimit } from 'express-rate-limit'
 import session from 'express-session'
 import helmet from 'helmet'
 import { Pool } from 'pg'
+import { fileURLToPath } from 'node:url'
 import { z } from 'zod'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Prisma, PrismaClient } from '../prisma/generated/prisma/client.ts'
@@ -13,6 +15,7 @@ import { getReservationExpiry, parseReservationMinutes, validateNumbers } from '
 
 const port = Number(process.env.PORT || 3000)
 const nodeEnv = process.env.NODE_ENV || 'development'
+const clientDistPath = fileURLToPath(new URL('../../client/dist/', import.meta.url))
 const databaseUrl = process.env.DATABASE_URL
 const sessionSecret = process.env.SESSION_SECRET
 const appOrigin = process.env.APP_ORIGIN
@@ -305,6 +308,13 @@ app.post('/api/operations', requireUser, asyncRoute(async (req, res) => {
 }))
 
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Rota não encontrada.' }))
+
+app.use(express.static(clientDistPath))
+app.get(/.*/, (_req, res, next) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'), (error) => {
+    if (error) next(error)
+  })
+})
 
 app.use((error, _req, res, _next) => {
   if (res.headersSent) return

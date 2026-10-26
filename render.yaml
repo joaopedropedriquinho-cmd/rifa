@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: rifa
+    runtime: node
+    plan: free
+    buildCommand: npm ci --prefix server && npm run db:generate --prefix server && npm ci --prefix client && npm run build --prefix client
+    startCommand: npm run db:migrate --prefix server && npm start --prefix server
+    envVars:
+      - key: NODE_VERSION
+        value: 24.3.0
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: APP_ORIGIN
+        sync: false
